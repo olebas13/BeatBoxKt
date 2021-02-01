@@ -3,6 +3,8 @@ package org.olebas.beatboxkt
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.ViewGroup
+import android.widget.SeekBar
+import android.widget.TextView
 import androidx.databinding.DataBindingUtil
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -12,6 +14,8 @@ import org.olebas.beatboxkt.databinding.ListItemSoundBinding
 class MainActivity : AppCompatActivity() {
 
     private lateinit var beatBox: BeatBox
+    private lateinit var speedTextView: TextView
+    private lateinit var speedSeekBar: SeekBar
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -25,6 +29,24 @@ class MainActivity : AppCompatActivity() {
             layoutManager = GridLayoutManager(context, 3)
             adapter = SoundAdapter(beatBox.sounds)
         }
+
+        speedTextView = binding.playbackSpeed
+        speedTextView.text = getString(R.string.playback_speed_text, (beatBox.playbackSpeed.toInt() * 100).toString())
+        speedSeekBar = binding.speedSeekBar
+
+        speedSeekBar.setOnSeekBarChangeListener(object : SeekBar.OnSeekBarChangeListener {
+            override fun onProgressChanged(seekBar: SeekBar?, progress: Int, fromUser: Boolean) {
+                beatBox.playbackSpeed = progress.toFloat() / 100
+                speedTextView.text = getString(R.string.playback_speed_text, progress.toString())
+            }
+
+            override fun onStartTrackingTouch(seekBar: SeekBar?) {
+            }
+
+            override fun onStopTrackingTouch(seekBar: SeekBar?) {
+            }
+
+        })
     }
 
     override fun onDestroy() {

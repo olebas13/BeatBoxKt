@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">BeatBoxKt</string>
+    <string name="playback_speed_text">Playback speed: %1$s</string>
 </resources>
